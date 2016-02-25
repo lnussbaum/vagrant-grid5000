@@ -22,7 +22,7 @@ module VagrantPlugins
              walltime = (Time::parse(target) - Time::now).to_i
              walltime = format("%02d:%02d:%02d", walltime / (60*60), walltime / 60 % 60, walltime % 60)
           end
-          if ENV['VAGRANT_DEBUG'] = 'REUSE_JOB'
+          if ENV['VAGRANT_DEBUG'] == 'REUSE_JOB'
 						job = env[:g5k].get_my_jobs(cfg.site).first
           else
             job = env[:g5k].reserve(:site => cfg.site, :walltime => walltime,
