@@ -10,10 +10,6 @@ This is a [Vagrant](http://www.vagrantup.com) plugin that adds a provider for
 machines running on the [Grid'5000](https://www.grid5000.fr) testbed to
 Vagrant.
 
-## What's still missing
-* vagrant provision
-* vagrant synced folders
-
 ## Installation and usage
 
 ```
@@ -47,11 +43,19 @@ Then try
 ```
 $ vagrant up --provider=grid5000
 $ vagrant ssh
+$ vagrant provision
 $ vagrant destroy
 ```
 
 For more details about Vagrantfile configuration parameters, see
 https://github.com/lnussbaum/vagrant-grid5000/blob/master/Vagrantfile
+
+### Synced folders
+
+Synced folders are a bit tricky. You need to install 'rsync' (which is not
+installed on jessie-x64-min), and then issue a ''vagrant reload'' to reload the
+configuration. Note that you can also use 'rsync-auto' to auto-synchronize
+changes.
 
 ## License
 

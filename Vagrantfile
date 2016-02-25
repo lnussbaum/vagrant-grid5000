@@ -46,5 +46,22 @@ Vagrant.configure("2") do |config|
       g5k.site = 'lyon'
       g5k.walltime = '0:15'
     end
+
+    # Synced folders configuration, using rsync (you need to install it if you use -min or -base, see below)
+    tb2.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
   end
+
+  # Since we connect as root directly, we don't need to set 'privileged' to true
+  # However, it is a good idea to install sudo so that normal provisioning scripts
+  # work.
+  # rsync is needed for synced folders.
+  config.vm.provision "shell", privileged: false, inline: 'apt-get update && apt-get -y install sudo rsync'
+
+  # privileged: false is no longer required
+  config.vm.provision "shell", inline: <<-SHELL
+    #!/bin/bash -x
+    apt-get -y install less vim ruby
+    apt-get -y install git pv
+  SHELL
+
 end

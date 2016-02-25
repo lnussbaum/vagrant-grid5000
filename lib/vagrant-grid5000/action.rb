@@ -11,8 +11,6 @@ module VagrantPlugins
 
       # TODO def self.action_halt
 
-      # TODO def self.action_provision
-
       def self.action_destroy
         Vagrant::Action::Builder.new.tap do |b|
           b.use Call, DestroyConfirm do |env, b2|
@@ -28,6 +26,20 @@ module VagrantPlugins
                 b3.use DestroyInstance
               end
             end
+          end
+        end
+      end
+
+      # This action is called when `vagrant provision` is called.
+      def self.action_provision
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConfigValidate
+          b.use Call, IsCreated do |env, b2|
+            if !env[:result]
+              b2.use MessageNotCreated
+              next
+            end
+            b2.use Provision
           end
         end
       end
@@ -89,7 +101,21 @@ module VagrantPlugins
         end
       end
 
-      # TODO def self.action_reload
+      def self.action_reload
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConfigValidate
+          b.use ConnectGrid5000
+          b.use Call, IsCreated do |env, b2|
+            if !env[:result]
+              b2.use MessageNotCreated
+              next
+            end
+
+            # We do almost nothing during reload
+            b2.use SyncedFolders
+          end
+        end
+      end
 
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
@@ -99,6 +125,7 @@ module VagrantPlugins
       autoload :DestroyInstance, action_root.join("destroy_instance")
       autoload :IsCreated, action_root.join("is_created")
       autoload :MessageAlreadyCreated, action_root.join("message_already_created")
+      autoload :MessageNotCreated, action_root.join("message_not_created")
     end
   end
 end
