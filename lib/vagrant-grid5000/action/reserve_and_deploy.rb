@@ -20,6 +20,7 @@ module VagrantPlugins
                target = '18:55:00 CET'
              end
              walltime = (Time::parse(target) - Time::now).to_i
+             walltime += 86400 if walltime < 0 # if we are after the deadline, target the next day
              walltime = format("%02d:%02d:%02d", walltime / (60*60), walltime / 60 % 60, walltime % 60)
           end
           if ENV['VAGRANT_DEBUG'] == 'REUSE_JOB'
