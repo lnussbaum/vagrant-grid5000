@@ -1,0 +1,51 @@
+en:
+  vagrant_grid5000:
+    warn_networks: |-
+      Warning! The ManagedServers provider doesn't support any of the Vagrant
+      high-level network configurations (`config.vm.network`). They will be ignored.
+    rsync_not_found_warning: |-
+      Warning! Folder sync disabled because the rsync binary is missing.
+      Make sure rsync is installed and the binary can be found in the PATH.
+    rsync_folder: |-
+      Rsyncing folder: %{hostpath} => %{guestpath}
+    winrm_upload: |-
+      Uploading with WinRM: %{hostpath} => %{guestpath}
+    linking_server: |-
+      Linking with managed server %{host}
+    unlinking_server: |-
+      Unlinking from managed server %{host}
+    rebooting_server: |-
+      Rebooting managed server %{host}
+    waiting_for_server: |-
+      Waiting for %{host} to reboot
+    states:
+      short_not_linked: |-
+        not linked
+      long_not_linked: |-
+        The managed server is not linked.
+      short_already_linked: |-
+        already linked
+      long_already_linked: |-
+        The managed server is already linked.
+      short_not_reachable: |-
+        not reachable
+      long_not_reachable: |-
+        The managed server is not reachable. Check if the `config.managed.server` is correct.
+      short_running: |-
+        running
+      long_running: |-
+        The managed server is running. To ssh into this machine, you can run
+        `vagrant ssh`. To provision the machine, you can run `vagrant provision`.
+    config:
+      server_required: |-
+        The IP or hostname of the server must be configured via "server"
+      private_key_missing: |-
+        The specified private key could not be found
+    errors:
+      rsync_error: |-
+        There was an error when attemping to rsync a shared folder.
+        Please inspect the error message below for more info.
+
+        Host path: %{hostpath}
+        Guest path: %{guestpath}
+        Error: %{stderr}
