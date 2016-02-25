@@ -1,5 +1,7 @@
 require "log4r"
 
+$last_check_time = nil
+
 module VagrantPlugins
   module Grid5000
     module Action
@@ -14,7 +16,10 @@ module VagrantPlugins
         def call(env)
           env[:g5k] = Cute::G5K::API.new(env[:machine].provider_config.cute_parameters || {})
           # FIXME customize logger to make it clear that ruby-cute is the one displaying messages
-          raise "Unable to retrieve the list of sites and find nancy in it" if not env[:g5k].site_uids.include?('nancy')
+          if $last_check_time.nil? or $last_check_time + 60 < Time::now
+            raise "Unable to retrieve the list of sites and find nancy in it" if not env[:g5k].site_uids.include?('nancy')
+            $last_check_time = Time::now
+          end
           @app.call(env)
         end
       end
