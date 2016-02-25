@@ -30,7 +30,7 @@ $ vagrant plugin install vagrant-grid5000
 
 Each provider needs at least one ''box''. This does not really make sense here, so we are providing a dummy one.
 ```
-$ vagrant box add FIXME
+$ vagrant box add --name dummy https://github.com/lnussbaum/vagrant-grid5000/raw/master/dummy.box
 ```
 
 Example Vagrantfile:
@@ -40,7 +40,8 @@ Vagrant.configure("2") do |config|
   # Global configuration for Grid'5000 access
   config.vm.provider "grid5000" do |g5k|
     # cute_parameters = { :conf_file =>"config file path" }
-    # see FIXME for details about allowed parameters
+    # For details about allowed parameters see
+    # https://github.com/lnussbaum/vagrant-grid5000/blob/master/lib/vagrant-grid5000/config.rb
 
   end
 
