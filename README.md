@@ -10,19 +10,11 @@ This is a [Vagrant](http://www.vagrantup.com) plugin that adds a provider for
 machines running on the [Grid'5000](https://www.grid5000.fr) testbed to
 Vagrant.
 
-This is still at an early state of development.
+## What's still missing
+* vagrant provision
+* vagrant synced folders
 
-## What works
-* vagrant up --provider=grid5000
-* vagrant status
-* vagrant ssh
-* vagrant destroy
-
-## What doesn't work
-
-* everything else
-
-## Installation
+## Installation and usage
 
 ```
 $ vagrant plugin install vagrant-grid5000
@@ -33,16 +25,16 @@ Each provider needs at least one ''box''. This does not really make sense here, 
 $ vagrant box add --name dummy https://github.com/lnussbaum/vagrant-grid5000/raw/master/dummy.box
 ```
 
-Example Vagrantfile:
+Example basic Vagrantfile:
 ```ruby
 Vagrant.configure("2") do |config|
 
-  # Global configuration for Grid'5000 access
+  # Global configuration for Grid'5000
   config.vm.provider "grid5000" do |g5k|
-    # cute_parameters = { :conf_file =>"config file path" }
+    # Ruby-Cute's authentication parameters
+    #g5k.cute_parameters = { :conf_file => "config file path" }
     # For details about allowed parameters see
     # https://github.com/lnussbaum/vagrant-grid5000/blob/master/lib/vagrant-grid5000/config.rb
-
   end
 
   config.vm.define :my_g5k_box do |g5k|
@@ -50,6 +42,16 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+
+Then try
+```
+$ vagrant up --provider=grid5000
+$ vagrant ssh
+$ vagrant destroy
+```
+
+For more details about Vagrantfile configuration parameters, see
+https://github.com/lnussbaum/vagrant-grid5000/blob/master/Vagrantfile
 
 ## License
 
@@ -71,3 +73,5 @@ execute Vagrant.
 $ bundle exec vagrant up --provider=grid5000
 ```
 etc.
+
+To debug stuff, use vagrant --debug.
