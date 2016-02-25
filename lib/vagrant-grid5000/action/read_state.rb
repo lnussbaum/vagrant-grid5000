@@ -1,5 +1,8 @@
 require "log4r"
 
+$job_cache_data = {}
+$job_cache_time = {}
+
 module VagrantPlugins
   module Grid5000
     module Action
@@ -18,19 +21,19 @@ module VagrantPlugins
           @app.call(env)
         end
 
-        $last_state_read = nil
         def read_state(env)
-          
 					return :not_created if not env[:g5k] or not env[:machine]
           id = env[:machine].id
           return :not_created if id.nil?
           site, jobid, node = id.split(':')
 
-          if $last_state_read != nil and env[:job] and Time::now < $last_state_read + 60
-            # skip
+          # Very basic caching
+          if $job_cache_time.has_key?([site, jobid]) and $job_cache_time[[site, jobid]] + 60 > Time::now
+            env[:job] = $job_cache_data[[site, jobid]]
           else
 						env[:job] = env[:g5k].get_job(site, jobid)
-            $last_state_read = Time::now
+            $job_cache_data[[site, jobid]] = env[:job]
+            $job_cache_time[[site, jobid]] = Time::now
           end
 					env[:machine_ssh_info] = { :host => node, :port => 22, :username => 'root', :proxy_command => "ssh -W #{node}:22 #{env[:g5k].g5k_user}@access.grid5000.fr" }
           return :running if env[:job]['state'] == 'running'
