@@ -18,7 +18,6 @@ module VagrantPlugins
           env[:g5k].logger = Logger.new(STDOUT)
           env[:g5k].logger.progname = 'ruby-cute'
           env[:g5k].logger.datetime_format = "%Y-%m-%d %H:%M:%S "
-          # FIXME customize logger to make it clear that ruby-cute is the one displaying messages
           if $last_check_time.nil? or $last_check_time + 60 < Time::now
             raise "Unable to retrieve the list of sites and find nancy in it" if not env[:g5k].site_uids.include?('nancy')
             $last_check_time = Time::now
