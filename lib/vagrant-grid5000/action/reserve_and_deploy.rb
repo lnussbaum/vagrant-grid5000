@@ -1,5 +1,10 @@
 require "log4r"
 require 'time'
+require 'fileutils'
+
+VAGRANT_INSECURE_PUBLIC_KEY = <<EOF
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key
+EOF
 
 module VagrantPlugins
   module Grid5000
@@ -26,9 +31,13 @@ module VagrantPlugins
           if ENV['VAGRANT_DEBUG'] == 'REUSE_JOB'
 						job = env[:g5k].get_my_jobs(cfg.site).first
           else
+						# hack: create a temporary file that holds the Vagrant public key, so that ruby-cute is happy.
+						f = `mktemp /tmp/vagrant-grid5000-public-key.XXXXXX.pub`.chomp
+						File::open(f, 'w') { |fd| fd.print VAGRANT_INSECURE_PUBLIC_KEY }
             job = env[:g5k].reserve(:site => cfg.site, :walltime => walltime,
-                                          :properties => cfg.properties, :env => cfg.env, :keys => cfg.keys,
-                                          :name => "vagrant-grid5000")
+                                    :properties => cfg.properties, :env => cfg.env, :keys => f.gsub('.pub', ''),
+                                    :name => "vagrant-grid5000")
+            FileUtils::rm(f)
           end
           env[:node] = job['assigned_nodes'].first
           env[:machine_state_id] = :running

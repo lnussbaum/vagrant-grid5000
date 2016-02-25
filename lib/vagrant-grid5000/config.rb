@@ -29,17 +29,10 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :env
 
-      # SSH keys to copy to the deployed machine. (default: use Ruby-Cute's default, which is to copy
-      # the public keys found in ~/.ssh/
-      # @return [String]
-      attr_accessor :keys
-
-
       def initialize()
         @cute_parameters = UNSET_VALUE
         @env = UNSET_VALUE
         @site = UNSET_VALUE
-        @keys = UNSET_VALUE
         @properties = UNSET_VALUE
         @walltime = UNSET_VALUE
       end
@@ -48,7 +41,6 @@ module VagrantPlugins
         @cute_parameters = nil if @cute_parameters == UNSET_VALUE
         @site = 'nancy' if @site == UNSET_VALUE
         @env = 'jessie-x64-min' if @env == UNSET_VALUE
-        @keys = nil if @keys == UNSET_VALUE
         @properties = '' if @properties == UNSET_VALUE
         @walltime = nil if @walltime == UNSET_VALUE
       end
