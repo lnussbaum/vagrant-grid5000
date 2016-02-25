@@ -20,6 +20,10 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :properties
 
+      # OAR queue to use when reserving resources. (default: 'default'; other values: production, besteffort)
+      # @return [String]
+      attr_accessor :queue
+
       # Walltime to use when reserving resources. (default: reserve resources until today at 6:55pm)
       # @return [String]
       attr_accessor :walltime
@@ -34,6 +38,7 @@ module VagrantPlugins
         @env = UNSET_VALUE
         @site = UNSET_VALUE
         @properties = UNSET_VALUE
+        @queue = UNSET_VALUE
         @walltime = UNSET_VALUE
       end
 
@@ -42,6 +47,7 @@ module VagrantPlugins
         @site = 'nancy' if @site == UNSET_VALUE
         @env = 'jessie-x64-min' if @env == UNSET_VALUE
         @properties = '' if @properties == UNSET_VALUE
+        @queue = 'default' if @queue == UNSET_VALUE
         @walltime = nil if @walltime == UNSET_VALUE
       end
 

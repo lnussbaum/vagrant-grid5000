@@ -34,7 +34,7 @@ module VagrantPlugins
             # hack: create a temporary file that holds the Vagrant public key, so that ruby-cute is happy.
             f = `mktemp /tmp/vagrant-grid5000-public-key.XXXXXX.pub`.chomp
             File::open(f, 'w') { |fd| fd.print VAGRANT_INSECURE_PUBLIC_KEY }
-            params = { :site => cfg.site, :walltime => walltime, :properties => cfg.properties, :env => cfg.env, :keys => f.gsub('.pub', ''), :name => "vagrant-g5k" }
+            params = { :site => cfg.site, :walltime => walltime, :properties => cfg.properties, :queue => cfg.queue, :env => cfg.env, :keys => f.gsub('.pub', ''), :name => "vagrant-g5k" }
             @logger.info("Initiating reservation and deployment with #{params.inspect}")
             job = env[:g5k].reserve(params)
             FileUtils::rm(f)
