@@ -35,13 +35,13 @@ module VagrantPlugins
             f = `mktemp /tmp/vagrant-grid5000-public-key.XXXXXX.pub`.chomp
             File::open(f, 'w') { |fd| fd.print VAGRANT_INSECURE_PUBLIC_KEY }
             params = { :site => cfg.site, :walltime => walltime, :properties => cfg.properties, :queue => cfg.queue, :env => cfg.env, :keys => f.gsub('.pub', ''), :name => "vagrant-g5k" }
-            @logger.info("Initiating reservation and deployment with #{params.inspect}")
+            env[:ui].info("Initiating reservation and deployment with #{params.inspect}")
             job = env[:g5k].reserve(params)
             FileUtils::rm(f)
           end
           env[:node] = job['assigned_nodes'].first
           env[:machine_state_id] = :running
-          @logger.info("Node #{env[:node]} successfully started.")
+          env[:ui].info("Node #{env[:node]} successfully started.")
           env[:job] = job
           env[:machine].id = "#{cfg.site}:#{job['uid']}:#{env[:node]}"
           @app.call(env)
