@@ -1,10 +1,8 @@
 # Vagrant Grid5000 Provider
 
 <span class="badges">
-[![Gem Version](https://badge.fury.io/rb/vagrant-grid5000.png)][gem]
+[![Gem Version](https://badge.fury.io/rb/vagrant-grid5000.svg)](https://badge.fury.io/rb/vagrant-grid5000)
 </span>
-
-[gem]: https://rubygems.org/gems/vagrant-grid5000
 
 This is a [Vagrant](http://www.vagrantup.com) plugin that adds a provider for
 machines running on the [Grid'5000](https://www.grid5000.fr) testbed to
